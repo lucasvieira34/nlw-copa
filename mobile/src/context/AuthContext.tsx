@@ -7,7 +7,7 @@ import { api } from "../api/api";
 WebBrowser.maybeCompleteAuthSession();
 
 interface UserProps {
-  nome: string;
+  name: string;
   avatarUrl: string;
 }
 
