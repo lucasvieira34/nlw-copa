@@ -18,3 +18,12 @@ Content-Type: application/json
 {
     "title": "Bolão do Lucas"
 }
+
+###
+
+POST http://localhost:3333/users
+Content-Type: application/json
+
+{
+    "access_token": "ya29.a0AeTM1ieIfZVwTCDY3oCZeZbSQNaZlWeJIZyqJ1t3Y0qhpVvbILq1sTzFCL1jsP2zsTgTd44QeKN9cL88AL1zDFn5PV_wGY51I_UBvCLb7sMTPNqVZhXrlxtzeWAwlIba3bc7a4qQsR9O5MD-tsLSYLrmEatEDwaCgYKAZISAQ4SFQHWtWOmI0vfXHadbWnpQjzj5GXFPQ0165"
+}
