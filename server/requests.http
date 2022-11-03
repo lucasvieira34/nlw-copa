@@ -12,6 +12,11 @@ GET http://localhost:3333/guesses/count
 
 ###
 
+GET http://localhost:3333/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTHVjYXMgVGVpeGVpcmEiLCJhdmF0YXJVcmwiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwX3hIYW5XQkczWlB6OGtiWlltVFh1U09JRVJFaG91NUh3dEFKdm9RPXM5Ni1jIiwic3ViIjoiY2xhMWdlbnRoMDAwMGswZXQ2MzhoYnVzayIsImlhdCI6MTY2NzUwMzc0NywiZXhwIjoxNjY4MTA4NTQ3fQ._4Q6oYI6QiCPqocf0-FCUMyZftqD0MhMrFg-FGFcf5o
+
+###
+
 POST http://localhost:3333/pools
 Content-Type: application/json
 
