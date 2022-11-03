@@ -48,3 +48,16 @@ Content-Type: application/json
 {
     "access_token": "ya29.a0AeTM1ieIfZVwTCDY3oCZeZbSQNaZlWeJIZyqJ1t3Y0qhpVvbILq1sTzFCL1jsP2zsTgTd44QeKN9cL88AL1zDFn5PV_wGY51I_UBvCLb7sMTPNqVZhXrlxtzeWAwlIba3bc7a4qQsR9O5MD-tsLSYLrmEatEDwaCgYKAZISAQ4SFQHWtWOmI0vfXHadbWnpQjzj5GXFPQ0165"
 }
+
+###
+
+POST http://localhost:3333/pools/cla1h57hb0001k0ay9esld9ej/games/cl9z0zcg10007k0gd5gal81fz/guesses
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTHVjYXMgVGVpeGVpcmEiLCJhdmF0YXJVcmwiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BTG01d3UwX3hIYW5XQkczWlB6OGtiWlltVFh1U09JRVJFaG91NUh3dEFKdm9RPXM5Ni1jIiwic3ViIjoiY2xhMWdlbnRoMDAwMGswZXQ2MzhoYnVzayIsImlhdCI6MTY2NzUwMzc0NywiZXhwIjoxNjY4MTA4NTQ3fQ._4Q6oYI6QiCPqocf0-FCUMyZftqD0MhMrFg-FGFcf5o
+
+{
+    "firstTeamPoints": 2,
+    "secondTeamPoints": 1
+}
+
+###
