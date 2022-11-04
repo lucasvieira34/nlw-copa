@@ -79,24 +79,26 @@ export function Guesses({ poolId, code }: Props) {
     <FlatList
       data={games}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <Game
-          data={item}
-          firstTeamPoints={
-            item.guess?.firstTeamPoints || item.guess?.firstTeamPoints === 0
-              ? item.guess.firstTeamPoints.toString()
-              : ""
-          }
-          secondTeamPoints={
-            item.guess?.secondTeamPoints || item.guess?.secondTeamPoints === 0
-              ? item.guess.secondTeamPoints.toString()
-              : ""
-          }
-          setFirstTeamPoints={setFirstTeamPoints}
-          setSecondTeamPoints={setSecondTeamPoints}
-          onGuessConfirm={() => handleGuessConfirm(item.id)}
-        />
-      )}
+      renderItem={({ item }) =>
+        new Date(item.date) > new Date() ? (
+          <Game
+            data={item}
+            firstTeamPoints={
+              item.guess?.firstTeamPoints || item.guess?.firstTeamPoints === 0
+                ? item.guess.firstTeamPoints.toString()
+                : ""
+            }
+            secondTeamPoints={
+              item.guess?.secondTeamPoints || item.guess?.secondTeamPoints === 0
+                ? item.guess.secondTeamPoints.toString()
+                : ""
+            }
+            setFirstTeamPoints={setFirstTeamPoints}
+            setSecondTeamPoints={setSecondTeamPoints}
+            onGuessConfirm={() => handleGuessConfirm(item.id)}
+          />
+        ) : null
+      }
       _contentContainerStyle={{ pb: 24 }}
       ListEmptyComponent={() => <EmptyMyPoolList code={code} />}
     />
