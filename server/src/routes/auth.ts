@@ -54,6 +54,7 @@ export async function authRoutes(fastify: FastifyInstance) {
           avatarUrl: userInfo.picture,
         },
       });
+      console.log(`USUÁRIO LOGADO VIA GOOGLE: ${user.email}`);
     }
 
     const token = fastify.jwt.sign(
