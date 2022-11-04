@@ -10,6 +10,7 @@ import { api } from "../api/api";
 import { PoolHeader } from "../components/PoolHeader";
 import { EmptyMyPoolList } from "../components/EmptyMyPoolList";
 import { Option } from "../components/Option";
+import { Share } from "react-native";
 
 interface RouteParams {
   id: string;
@@ -41,6 +42,12 @@ export function Details() {
     }
   }
 
+  async function handleCodeShare() {
+    await Share.share({
+      message: poolDetails.code,
+    });
+  }
+
   useEffect(() => {
     fetchPoolDetails();
   }, [id]);
@@ -51,7 +58,7 @@ export function Details() {
 
   return (
     <VStack flex={1} bgColor="gray.900">
-      <Header title={poolDetails.title} showBackButton showShareButton />
+      <Header title={poolDetails.title} onShare={handleCodeShare} showBackButton showShareButton />
 
       {poolDetails._count?.participants > 0 ? (
         <VStack px={5} flex={1}>
