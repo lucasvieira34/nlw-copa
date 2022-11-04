@@ -28,7 +28,8 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   const [isUserLoading, setIsUserLoading] = useState(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId: "928361455994-3datf9kbqbka71q8rocf3lbr4od1oun6.apps.googleusercontent.com",
+    //npm i dotenv babel-plugin-inline-dotenv
+    clientId: process.env.CLIENT_ID,
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
     scopes: ["profile", "email"],
   });
