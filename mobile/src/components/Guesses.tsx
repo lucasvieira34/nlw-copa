@@ -58,7 +58,7 @@ export function Guesses({ poolId, code }: Props) {
 
       fetchGames();
     } catch (err) {
-      console.log(err);
+      console.log(err.response?.data?.message);
       toast.show({
         title: "Não foi possível enviar o palpite.",
         placement: "top",
@@ -71,7 +71,6 @@ export function Guesses({ poolId, code }: Props) {
     fetchGames();
   }, [poolId]);
 
-  // REFATORAR PARA LOADING DO BOTÃO
   if (isLoading) {
     return <Loading />;
   }
@@ -83,12 +82,22 @@ export function Guesses({ poolId, code }: Props) {
       renderItem={({ item }) => (
         <Game
           data={item}
+          firstTeamPoints={
+            item.guess?.firstTeamPoints || item.guess?.firstTeamPoints === 0
+              ? item.guess.firstTeamPoints.toString()
+              : ""
+          }
+          secondTeamPoints={
+            item.guess?.secondTeamPoints || item.guess?.secondTeamPoints === 0
+              ? item.guess.secondTeamPoints.toString()
+              : ""
+          }
           setFirstTeamPoints={setFirstTeamPoints}
           setSecondTeamPoints={setSecondTeamPoints}
           onGuessConfirm={() => handleGuessConfirm(item.id)}
         />
       )}
-      _contentContainerStyle={{ pb: 10 }}
+      _contentContainerStyle={{ pb: 24 }}
       ListEmptyComponent={() => <EmptyMyPoolList code={code} />}
     />
   );

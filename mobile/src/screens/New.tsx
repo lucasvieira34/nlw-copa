@@ -1,4 +1,5 @@
 import { Heading, Text, VStack, useToast } from "native-base";
+import { useNavigation } from "@react-navigation/native";
 import { Header } from "../components/Header";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
@@ -9,6 +10,7 @@ import Logo from "../assets/logo.svg";
 import { api } from "../api/api";
 
 export function New() {
+  const { navigate } = useNavigation();
   const [title, setTitle] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
@@ -25,7 +27,7 @@ export function New() {
     try {
       setIsLoading(true);
 
-      await api.post("/pools", { title: title.toUpperCase() });
+      await api.post("/pools", { title });
 
       toast.show({
         title: "Bolão criado com sucesso!",
@@ -34,6 +36,7 @@ export function New() {
       });
 
       setTitle("");
+      navigate("pools");
     } catch (err) {
       console.log(err);
 
