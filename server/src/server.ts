@@ -16,9 +16,7 @@ async function bootstrap() {
     origin: true,
   });
 
-  await fastify.register(jwt, {
-    secret: "nlwcopa",
-  });
+  await fastify.register(jwt, { secret: `${process.env.JWT_SECRET}` });
 
   await fastify.register(poolRoutes);
   await fastify.register(authRoutes);
@@ -27,7 +25,7 @@ async function bootstrap() {
   await fastify.register(userRoutes);
 
   // PARA CONECTAR COM MOBILE, É NECESSÁRIO O HOST EM DEV
-  await fastify.listen({ port: 3333, host: "0.0.0.0" });
+  await fastify.listen({ port: Number(process.env.PORT), host: `${process.env.HOST}` });
 }
 
 bootstrap();
