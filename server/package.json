@@ -2,11 +2,11 @@
   "name": "bolao-copa",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.ts",
   "scripts": {
     "start": "node build/server.js",
-    "dev": "tsx watch src/server.ts",
-    "postinstall": "tsc"
+    "postinstall": "tsc",
+    "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",
