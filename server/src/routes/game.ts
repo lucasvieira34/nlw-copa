@@ -43,4 +43,20 @@ export async function gameRoutes(fastify: FastifyInstance) {
       };
     }
   );
+
+  fastify.get(
+    "/games",
+    {
+      onRequest: [authenticate],
+    },
+    async () => {
+      const games = await prisma.game.findMany({
+        orderBy: {
+          date: "asc",
+        },
+      });
+
+      return { games };
+    }
+  );
 }

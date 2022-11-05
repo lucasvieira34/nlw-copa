@@ -26,6 +26,8 @@ export interface GameProps {
   stadium: string;
   firstTeamName: string;
   secondTeamName: string;
+  firstTeamPoint: number;
+  secondTeamPoint: number;
   firstTeamCountryCode: string;
   secondTeamCountryCode: string;
   guess: null | GuessProps;
@@ -33,11 +35,12 @@ export interface GameProps {
 
 interface Props {
   data: GameProps;
-  onGuessConfirm: () => void;
+  onGuessConfirm?: () => void;
   firstTeamPoints: string;
   secondTeamPoints: string;
-  setFirstTeamPoints: (value: string) => void;
-  setSecondTeamPoints: (value: string) => void;
+  setFirstTeamPoints?: (value: string) => void;
+  setSecondTeamPoints?: (value: string) => void;
+  isAllMatch?: boolean;
 }
 
 export function Game({
@@ -47,6 +50,7 @@ export function Game({
   setFirstTeamPoints,
   setSecondTeamPoints,
   onGuessConfirm,
+  isAllMatch = false,
 }: Props) {
   const { colors, sizes } = useTheme();
 
@@ -94,7 +98,7 @@ export function Game({
         />
       </HStack>
 
-      {!data.guess && (
+      {!data.guess && !isAllMatch && (
         <Button
           size="xs"
           w="full"

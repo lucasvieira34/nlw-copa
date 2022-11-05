@@ -557,7 +557,7 @@ async function main() {
   });
   await prisma.game.create({
     data: {
-      date: "2022-11-02T12:00:00.201Z",
+      date: "2022-12-02T12:00:00.201Z",
       firstTeamCountryCode: "KR",
       secondTeamCountryCode: "PT",
       firstTeamName: "Coréia do Sul",
@@ -569,7 +569,7 @@ async function main() {
   });
   await prisma.game.create({
     data: {
-      date: "2022-11-02T12:00:00.201Z",
+      date: "2022-12-02T12:00:00.201Z",
       firstTeamCountryCode: "GH",
       secondTeamCountryCode: "UY",
       firstTeamName: "Gana",
