@@ -46,12 +46,8 @@ export function Games() {
         renderItem={({ item }) => (
           <Game
             data={item}
-            firstTeamPoints={
-              item.firstTeamPoint || item.firstTeamPoint === 0 ? item.guess.firstTeamPoints.toString() : ""
-            }
-            secondTeamPoints={
-              item.secondTeamPoint || item.secondTeamPoint === 0 ? item.guess.secondTeamPoints.toString() : ""
-            }
+            firstTeamPoints={item.firstTeamPoint || item.firstTeamPoint === 0 ? item.firstTeamPoint.toString() : ""}
+            secondTeamPoints={item.secondTeamPoint || item.secondTeamPoint === 0 ? item.secondTeamPoint.toString() : ""}
             isAllMatch={true}
           />
         )}

@@ -86,6 +86,7 @@ export function Game({
           position="right"
           onChangeText={setFirstTeamPoints}
           teamPoints={firstTeamPoints}
+          isAllMatch={isAllMatch}
         />
 
         <X color={colors.gray[300]} size={sizes[6]} />

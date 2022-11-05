@@ -8,9 +8,10 @@ interface Props {
   position: "left" | "right";
   teamPoints: string;
   onChangeText: (value: string) => void;
+  isAllMatch?: boolean;
 }
 
-export function Team({ code, position, teamPoints, onChangeText }: Props) {
+export function Team({ code, position, teamPoints, onChangeText, isAllMatch = false }: Props) {
   return (
     <HStack alignItems="center">
       {position === "left" && <CountryFlag isoCode={code} size={25} style={{ marginRight: 12 }} />}
@@ -24,7 +25,7 @@ export function Team({ code, position, teamPoints, onChangeText }: Props) {
         keyboardType="numeric"
         onChangeText={onChangeText}
         defaultValue={teamPoints}
-        isDisabled={teamPoints ? true : false}
+        isDisabled={teamPoints || isAllMatch ? true : false}
       />
 
       {position === "right" && <CountryFlag isoCode={code} size={25} style={{ marginLeft: 12 }} />}
