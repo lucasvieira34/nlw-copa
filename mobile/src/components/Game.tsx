@@ -21,6 +21,11 @@ interface GuessProps {
 export interface GameProps {
   id: string;
   date: string;
+  round: string;
+  group: string;
+  stadium: string;
+  firstTeamName: string;
+  secondTeamName: string;
   firstTeamCountryCode: string;
   secondTeamCountryCode: string;
   guess: null | GuessProps;
@@ -45,7 +50,7 @@ export function Game({
 }: Props) {
   const { colors, sizes } = useTheme();
 
-  const dateFormatted = dayjs(data.date).locale(ptBR).format("DD [de] MMMM [de] YYYY [às] HH:00[h]");
+  const dateFormatted = dayjs(data.date).locale(ptBR).format("DD [de] MMMM [de] YYYY [-] HH:00[h]");
 
   return (
     <VStack
@@ -59,7 +64,12 @@ export function Game({
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {countries.getName(data.firstTeamCountryCode, "pt")} vs. {countries.getName(data.secondTeamCountryCode, "pt")}
+        {/* {countries.getName(data.firstTeamCountryCode, "pt")} vs. {countries.getName(data.secondTeamCountryCode, "pt")} */}
+        {data.firstTeamName} x {data.secondTeamName}
+      </Text>
+
+      <Text color="gray.200" fontSize="xs">
+        Grupo {data.group} - {data.round}
       </Text>
 
       <Text color="gray.200" fontSize="xs">
