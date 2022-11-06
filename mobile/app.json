@@ -1,8 +1,7 @@
 {
   "expo": {
-    "name": "nwlmobile",
+    "name": "LTV Copa",
     "slug": "nwlmobile",
-    "scheme": "nwlmobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,11 +14,15 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.lucaastv.nwlmobile",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.1085087390605-c8sf5he8gnbjs50jmd01r2r4iqs7irn8"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {

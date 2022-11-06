@@ -3,6 +3,7 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { api } from "../api/api";
+import { Platform } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -27,17 +28,29 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
   const [isUserLoading, setIsUserLoading] = useState(false);
 
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    //npm i dotenv babel-plugin-inline-dotenv
-    clientId: process.env.CLIENT_ID,
-    redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
-    scopes: ["profile", "email"],
-  });
+  const androidClientId = "1085087390605-t6uvc7p5gf282bakpmgfakppv5ir9c2q.apps.googleusercontent.com";
+  const iosClientId = "1085087390605-c8sf5he8gnbjs50jmd01r2r4iqs7irn8.apps.googleusercontent.com";
+
+  let config: Partial<AuthSession.GoogleAuthRequestConfig> = {};
+  //npm i dotenv babel-plugin-inline-dotenv
+  if (process.env.SCOPE === "DEV") {
+    config = {
+      clientId: process.env.CLIENT_ID,
+      redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
+    };
+  } else if (process.env.SCOPE === "PRD") {
+    config = {
+      clientId: Platform.OS === "android" ? androidClientId : iosClientId,
+      androidClientId,
+      iosClientId,
+    };
+  }
+  const [request, response, promptAsync] = Google.useAuthRequest({ ...config, scopes: ["profile", "email"] });
 
   async function signIn() {
     try {
       setIsUserLoading(true);
-      await promptAsync();
+      await promptAsync({ useProxy: process.env.SCOPE === "DEV" ? true : false });
     } catch (err) {
       console.log(err);
       throw err;

@@ -8,6 +8,11 @@
       "distribution": "internal"
     },
     "preview": {
+      "env": {
+        "API_URL": "https://quiet-forest-52065.herokuapp.com/",
+        "CLIENT_ID": "928361455994-3datf9kbqbka71q8rocf3lbr4od1oun6.apps.googleusercontent.com",
+        "SCOPE": "PRD"
+      },
       "android": {
         "buildType": "apk"
       },
