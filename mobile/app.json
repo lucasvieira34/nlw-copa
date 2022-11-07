@@ -33,6 +33,16 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "react-native-fbsdk-next",
+        {
+          "appID": "1212426412655346",
+          "clientToken": "b91074c49b784b21d06a1422f2b514b9",
+          "displayName": "LTV Copa Beta"
+        }
+      ]
+    ]
   }
 }
