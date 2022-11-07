@@ -16,7 +16,16 @@ export function SignIn() {
         title="ENTRAR COM O GOOGLE"
         leftIcon={<Icon as={Fontisto} name="google" color="white" size="md" />}
         mt={12}
-        onPress={signIn}
+        onPress={() => signIn("GOOGLE")}
+        isLoading={isUserLoading}
+        _loading={{ _spinner: { color: "white" } }}
+      />
+      <Button
+        type="TERTIARY"
+        title="ENTRAR COM O FACEBOOK"
+        leftIcon={<Icon as={Fontisto} name="facebook" color="white" size="md" />}
+        mt={2}
+        onPress={() => signIn("FACEBOOK")}
         isLoading={isUserLoading}
         _loading={{ _spinner: { color: "white" } }}
       />

@@ -1,11 +1,11 @@
-import { Button as ButtonNativeBase, IButtonProps, Text } from 'native-base';
+import { Button as ButtonNativeBase, IButtonProps, Text } from "native-base";
 
 interface Props extends IButtonProps {
   title: string;
-  type?: 'PRIMARY' | 'SECONDARY';
+  type?: "PRIMARY" | "SECONDARY" | "TERTIARY";
 }
 
-export function Button({ title, type = 'PRIMARY', ...rest }: Props) {
+export function Button({ title, type = "PRIMARY", ...rest }: Props) {
   return (
     <ButtonNativeBase
       w="full"
@@ -13,22 +13,18 @@ export function Button({ title, type = 'PRIMARY', ...rest }: Props) {
       rounded="sm"
       fontSize="md"
       textTransform="uppercase"
-      bg={type === 'SECONDARY' ? 'red.500' : "yellow.500"}
+      bg={type === "SECONDARY" ? "red.500" : type === "PRIMARY" ? "yellow.500" : "blue.400"}
       _pressed={{
-        bg: type === 'SECONDARY' ? "red.400" : "yellow.600"
+        bg: type === "SECONDARY" ? "red.400" : type === "PRIMARY" ? "yellow.600" : "blue.500",
       }}
       _loading={{
-        _spinner: { color: "black" }
+        _spinner: { color: "black" },
       }}
       {...rest}
     >
-      <Text
-        fontSize="sm"
-        fontFamily="heading"
-        color={type === 'SECONDARY' ? 'white' : "black"}
-      >
+      <Text fontSize="sm" fontFamily="heading" color={type === "SECONDARY" || type === "TERTIARY" ? "white" : "black"}>
         {title}
       </Text>
-    </ButtonNativeBase >
+    </ButtonNativeBase>
   );
 }

@@ -9,9 +9,12 @@
     },
     "preview": {
       "env": {
+        "SCOPE": "PRD",
         "API_URL": "https://quiet-forest-52065.herokuapp.com/",
-        "CLIENT_ID": "928361455994-3datf9kbqbka71q8rocf3lbr4od1oun6.apps.googleusercontent.com",
-        "SCOPE": "PRD"
+        "GOOGLE_WEB_CLIENT_ID": "1085087390605-6eeadt8qsp31fqd288451pav0o5h38n3.apps.googleusercontent.com",
+        "GOOGLE_ANDROID_CLIENT_ID": "1085087390605-t6uvc7p5gf282bakpmgfakppv5ir9c2q.apps.googleusercontent.com",
+        "GOOGLE_IOS_CLIENT_ID": "1085087390605-c8sf5he8gnbjs50jmd01r2r4iqs7irn8.apps.googleusercontent.com",
+        "FACEBOOK_CLIENT_ID": "1212426412655346"
       },
       "android": {
         "buildType": "apk"

@@ -18,17 +18,25 @@ export async function authRoutes(fastify: FastifyInstance) {
   fastify.post("/users", async (request) => {
     const createUserBody = z.object({
       access_token: z.string(),
+      loginProvider: z.string(),
     });
 
-    const { access_token } = createUserBody.parse(request.body);
+    const { access_token, loginProvider } = createUserBody.parse(request.body);
 
-    const userResponse = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
-
-    const userData = await userResponse.data;
+    let userResponse, userData;
+    if (loginProvider === "GOOGLE") {
+      userResponse = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      userData = await userResponse.data;
+    } else {
+      userResponse = await axios.get(
+        `https://graph.facebook.com/me?fields=id,name,picture.type(large),email&access_token=${access_token}`
+      );
+      userData = await { ...userResponse.data, picture: userResponse.data.picture.data.url };
+    }
 
     const userInfoSchema = z.object({
       id: z.string(),
@@ -39,22 +47,43 @@ export async function authRoutes(fastify: FastifyInstance) {
 
     const userInfo = userInfoSchema.parse(userData);
 
-    let user = await prisma.user.findUnique({
-      where: {
+    let where, data;
+    if (loginProvider === "GOOGLE") {
+      where = {
         googleId: userInfo.id,
-      },
+      };
+      data = {
+        googleId: userInfo.id,
+        name: userInfo.name,
+        email: userInfo.email,
+        avatarUrl: userInfo.picture,
+      };
+    } else {
+      where = {
+        facebookId: userInfo.id,
+      };
+      data = {
+        facebookId: userInfo.id,
+        name: userInfo.name,
+        email: userInfo.email,
+        avatarUrl: userInfo.picture,
+      };
+    }
+    let user = await prisma.user.findUnique({
+      where,
     });
 
     if (!user) {
       user = await prisma.user.create({
-        data: {
-          googleId: userInfo.id,
-          name: userInfo.name,
-          email: userInfo.email,
-          avatarUrl: userInfo.picture,
-        },
+        data,
       });
-      console.log(`USUÁRIO LOGADO VIA GOOGLE: ${user.email}`);
+
+      const message =
+        loginProvider === "GOOGLE"
+          ? `USUÁRIO LOGADO VIA GOOGLE: ${user.email}`
+          : `USUÁRIO LOGADO VIA FACEBOOK: ${user.email}`;
+
+      console.log(message);
     }
 
     const token = fastify.jwt.sign(

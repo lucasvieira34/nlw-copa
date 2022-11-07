@@ -2,6 +2,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import * as Facebook from "expo-auth-session/providers/facebook";
 import { api } from "../api/api";
 import { Platform } from "react-native";
 
@@ -15,7 +16,7 @@ interface UserProps {
 export interface AuthContextDataProps {
   user: UserProps;
   isUserLoading: boolean;
-  signIn: () => Promise<void>;
+  signIn: (value: string) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -24,33 +25,53 @@ interface AuthProviderProps {
 
 export const AuthContext = createContext({} as AuthContextDataProps);
 
+//npm i dotenv babel-plugin-inline-dotenv
 export function AuthContextProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<UserProps>({} as UserProps);
   const [isUserLoading, setIsUserLoading] = useState(false);
+  const [loginProvider, setLoginProvider] = useState("");
 
-  const androidClientId = "1085087390605-t6uvc7p5gf282bakpmgfakppv5ir9c2q.apps.googleusercontent.com";
-  const iosClientId = "1085087390605-c8sf5he8gnbjs50jmd01r2r4iqs7irn8.apps.googleusercontent.com";
-
-  let config: Partial<AuthSession.GoogleAuthRequestConfig> = {};
-  //npm i dotenv babel-plugin-inline-dotenv
+  let googleConfig: Partial<AuthSession.GoogleAuthRequestConfig> = {};
+  let facebookConfig: Partial<AuthSession.FacebookAuthRequestConfig> = {};
   if (process.env.SCOPE === "DEV") {
-    config = {
-      clientId: process.env.CLIENT_ID,
+    googleConfig = {
+      clientId: process.env.GOOGLE_WEB_CLIENT_ID,
+      redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
+    };
+    facebookConfig = {
+      expoClientId: process.env.FACEBOOK_CLIENT_ID,
       redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
     };
   } else if (process.env.SCOPE === "PRD") {
-    config = {
-      clientId: Platform.OS === "android" ? androidClientId : iosClientId,
-      androidClientId,
-      iosClientId,
+    googleConfig = {
+      clientId: Platform.OS === "android" ? process.env.GOOGLE_ANDROID_CLIENT_ID : process.env.GOOGLE_IOS_CLIENT_ID,
+      androidClientId: process.env.GOOGLE_ANDROID_CLIENT_ID,
+      iosClientId: process.env.GOOGLE_IOS_CLIENT_ID,
+    };
+    facebookConfig = {
+      clientId: process.env.FACEBOOK_CLIENT_ID,
     };
   }
-  const [request, response, promptAsync] = Google.useAuthRequest({ ...config, scopes: ["profile", "email"] });
+  const googleAuthResponse = Google.useAuthRequest({ ...googleConfig, scopes: ["profile", "email"] });
+  const facebookAuthResponse = Facebook.useAuthRequest({
+    ...facebookConfig,
+    scopes: ["public_profile", "email"],
+    responseType: AuthSession.ResponseType.Token,
+  });
 
-  async function signIn() {
+  async function signIn(provider: string) {
+    setLoginProvider(provider);
     try {
       setIsUserLoading(true);
-      await promptAsync({ useProxy: process.env.SCOPE === "DEV" ? true : false });
+      if (provider === "GOOGLE") {
+        console.log("login via google");
+        const [request, response, promptAsync] = googleAuthResponse;
+        await promptAsync({ useProxy: process.env.SCOPE === "DEV" ? true : false });
+      } else if (provider === "FACEBOOK") {
+        console.log("login via facebook");
+        const [request, response, promptAsync] = facebookAuthResponse;
+        await promptAsync({ useProxy: process.env.SCOPE === "DEV" ? true : false });
+      }
     } catch (err) {
       console.log(err);
       throw err;
@@ -59,11 +80,11 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function signInWithGoogle(access_token: string) {
+  async function signInWithProvider(access_token: string) {
     try {
       setIsUserLoading(true);
 
-      const tokenResponse = await api.post("/users", { access_token });
+      const tokenResponse = await api.post("/users", { access_token, loginProvider });
       api.defaults.headers.common["Authorization"] = `Bearer ${tokenResponse.data.token}`;
 
       const userInfoReponse = await api.get("/me");
@@ -77,10 +98,16 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   }
 
   useEffect(() => {
-    if (response?.type === "success" && response.authentication?.accessToken) {
-      signInWithGoogle(response.authentication.accessToken);
+    if (loginProvider === "GOOGLE") {
+      if (googleAuthResponse[1]?.type === "success" && googleAuthResponse[1].authentication?.accessToken) {
+        signInWithProvider(googleAuthResponse[1].authentication.accessToken);
+      }
+    } else if (loginProvider === "FACEBOOK") {
+      if (facebookAuthResponse[1]?.type === "success" && facebookAuthResponse[1].authentication.accessToken) {
+        signInWithProvider(facebookAuthResponse[1].authentication.accessToken);
+      }
     }
-  }, [response]);
+  }, [googleAuthResponse[1], facebookAuthResponse[1]]);
 
   return (
     <AuthContext.Provider
